@@ -1,0 +1,42 @@
+HTML Tags Used (10+):
+1. <nav> - Navigation bar for site-wide links
+2. <a> - Hyperlinks for navigation between pages
+3. <div> - Container elements for grouping content
+4. <h1> - Main page headings
+5. <h2> - Section subheadings
+6. <p> - Paragraph text content
+7. <ul> - Unordered lists for interests
+8. <li> - List items within unordered lists
+9. <img> - Images of cats on homepage and interests page
+10. <button> - Interactive button on homepage
+11. <br> - Line break before button
+12. <footer> - Footer section with copyright info
+13. <form> - Contact form on contact page
+14. <label> - Form field labels
+15. <input> - Form input fields
+16. <textarea> - Multi-line text input for messages
+17. <script> - JavaScript code for button interactivity
+
+CSS Properties Used (5+):
+1. background-color - Set page and element background colors
+2. font-family - Define typography for body text
+3. color - Set text colors for headings
+4. font-size - Adjust text size for headings and navbar
+5. margin-bottom - Add spacing below headings
+6. border - Add borders around card elements
+7. border-radius - Round corners on cards
+8. box-shadow - Add shadow effects to cards
+9. font-weight - Make navbar brand bold
+10. margin-top - Add spacing above footer
+
+Bootstrap Features Used:
+- Navbar component with dark theme for site navigation
+- Card component to organize content sections
+- Button styling with btn and btn-primary classes
+- Form styling with form-control and form-label classes
+- Container and spacing utilities (mt-5, mb-3, p-3, p-4)
+- Responsive image class (img-fluid)
+- Background and text color utilities (bg-dark, text-white, text-center)
+
+JavaScript Implementation:
+Used JavaScript to create an interactive button on the homepage that changes color to green and updates its text to "Taking you to Contact..." when clicked, then redirects to the contact page after a 1-second delay using setTimeout and window.location.href.

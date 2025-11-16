@@ -1,0 +1,30 @@
+/* Tag selector - styles all body elements */
+body {
+    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Tag selector - styles all h1 elements */
+h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Class selector - styles elements with class="card" */
+.card {
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Class selector - styles the navbar brand */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Tag selector - styles all footer elements */
+footer {
+    margin-top: 50px;
+}
