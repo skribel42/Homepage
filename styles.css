@@ -1,30 +1,345 @@
-/* Tag selector - styles all body elements */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+/* =============================================
+   CSS VARIABLES
+   ============================================= */
+:root {
+    --green: #00ff41;
+    --green-dim: #00cc33;
+    --green-glow: rgba(0, 255, 65, 0.35);
+    --green-faint: rgba(0, 255, 65, 0.07);
+    --black: #000000;
+    --border: rgba(0, 255, 65, 0.18);
+    --text-muted: rgba(0, 255, 65, 0.45);
+}
+
+/* =============================================
+   BASE
+   ============================================= */
 body {
-    background-color: #f0f0f0;
-    font-family: 'Arial', sans-serif;
+    background-color: var(--black);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--green);
+    overflow-x: hidden;
+    cursor: crosshair;
 }
 
-/* Tag selector - styles all h1 elements */
+/* Scanline overlay */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.07) 2px,
+        rgba(0, 0, 0, 0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+}
+
 h1 {
-    color: #2c3e50;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    color: var(--green);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 1;
+    text-shadow: 0 0 40px var(--green-glow), 0 0 80px rgba(0, 255, 65, 0.1);
+    margin-bottom: 1rem;
 }
 
-/* Class selector - styles elements with class="card" */
-.card {
-    border: 2px solid #3498db;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+h2 {
+    font-family: 'Orbitron', monospace;
+    color: var(--green);
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
 }
 
-/* Class selector - styles the navbar brand */
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
+h2 span {
+    color: var(--text-muted);
 }
 
-/* Tag selector - styles all footer elements */
+p {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+a {
+    color: var(--green);
+    text-decoration: none;
+    transition: text-shadow 0.2s;
+}
+
+a:hover {
+    color: var(--green);
+    text-shadow: 0 0 10px var(--green-glow);
+}
+
 footer {
-    margin-top: 50px;
+    margin-top: 0;
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    position: relative;
+    z-index: 1;
+}
+
+footer span {
+    color: var(--green);
+}
+
+/* =============================================
+   MATRIX CANVAS
+   ============================================= */
+#matrix-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0.045;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* =============================================
+   NAVBAR
+   ============================================= */
+.navbar {
+    background: rgba(0, 0, 0, 0.92) !important;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1rem;
+    color: var(--green) !important;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-shadow: 0 0 18px var(--green-glow);
+}
+
+.navbar-brand::before {
+    content: '> ';
+    color: var(--text-muted);
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    padding: 0.4rem 1rem !important;
+    transition: all 0.2s ease;
+}
+
+.nav-link::before { content: '[ '; opacity: 0; transition: opacity 0.15s; }
+.nav-link::after  { content: ' ]'; opacity: 0; transition: opacity 0.15s; }
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--green) !important;
+    text-shadow: 0 0 10px var(--green-glow);
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after,
+.nav-link.active::before,
+.nav-link.active::after {
+    opacity: 1;
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+.hero {
+    position: relative;
+    z-index: 1;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.hero-label::before {
+    content: '$ ';
+    color: var(--green);
+}
+
+.hero-title {
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title span {
+    color: var(--green);
+}
+
+.typewriter {
+    font-size: 1.1rem;
+    color: var(--green-dim);
+    border-right: 2px solid var(--green);
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 2.5s steps(50) 0.5s forwards, blink 0.75s step-end infinite;
+    margin-bottom: 3rem;
+}
+
+@keyframes typing {
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.btn-terminal {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 2rem;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    cursor: crosshair;
+}
+
+.btn-terminal:hover {
+    color: var(--green);
+    background: var(--green-faint);
+    box-shadow: 0 0 20px var(--green-glow);
+    text-shadow: 0 0 8px var(--green-glow);
+}
+
+.btn-terminal-solid {
+    background: var(--green);
+    border: 1px solid var(--green);
+    color: var(--black);
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 2rem;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    cursor: crosshair;
+}
+
+.btn-terminal-solid:hover {
+    background: transparent;
+    color: var(--green);
+    box-shadow: 0 0 20px var(--green-glow);
+}
+
+/* =============================================
+   CARD (Bootstrap override)
+   ============================================= */
+.card {
+    background: var(--green-faint);
+    border: 1px solid var(--border) !important;
+    border-radius: 0 !important;
+    box-shadow: none;
+    color: var(--text-muted);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 20px var(--green-faint);
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* =============================================
+   BLOG SECTION
+   ============================================= */
+.blog-section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 0;
+}
+
+.blog-card {
+    background: var(--green-faint);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    height: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.blog-card:hover {
+    border-color: var(--green);
+    box-shadow: 0 0 24px var(--green-faint);
+}
+
+.blog-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+}
+
+.blog-date::before {
+    content: '// ';
+    color: var(--green);
+}
+
+.blog-title {
+    font-size: 1rem;
+    color: var(--green);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.blog-excerpt {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+}
+
+.blog-link {
+    font-size: 0.8rem;
+    color: var(--green-dim);
+    letter-spacing: 0.1em;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+.blog-link:hover {
+    color: var(--green);
+    text-shadow: 0 0 8px var(--green-glow);
 }
