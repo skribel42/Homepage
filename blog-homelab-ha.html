@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link href="styles.css" rel="stylesheet">
+        <title>// Homelab HA on a Budget</title>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">r.alexander</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="interests.html">Interests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <article class="blog-post">
+            <div class="container">
+
+                <div class="post-header">
+                    <p class="blog-date">2026-04-03</p>
+                    <h1 class="post-title">Homelab HA on a Budget: NFS + Proxmox + a USB Drive</h1>
+                    <p class="post-subtitle">How I got shared storage and Pi-hole high availability running across a 3-node mini PC cluster for basically nothing.</p>
+                    <div class="post-tags">
+                        <span class="tag">proxmox</span>
+                        <span class="tag">homelab</span>
+                        <span class="tag">nfs</span>
+                        <span class="tag">linux</span>
+                    </div>
+                </div>
+
+                <div class="post-body">
+
+                    <p>Everyone's homelab journey hits the same wall eventually — you get a cluster running, you want high availability, and then you realize HA requires shared storage. And shared storage usually means a NAS, a SAN, or Ceph. All of which cost either money or a machine you don't have.</p>
+
+                    <p>Mine hit that wall when I decided I wanted Pi-hole to automatically fail over between nodes if one went down. I had a 3-node Proxmox cluster running on mini PCs, no extra hardware, and a 2TB SATA drive sitting in a drawer. Here's how I made it work for basically nothing.</p>
+
+                    <h2><span>// </span>The Setup</h2>
+
+                    <p>Three mini PCs running Proxmox VE, all clustered up, all on the same management network. Each node has a single drive — the OS and any VMs living on the same disk. No spare drives, no NAS, no Ceph. Pi-hole running as an LXC container on one of the nodes, DNS working fine, no redundancy whatsoever.</p>
+
+                    <p>The problem with HA in this situation is straightforward: if the node running Pi-hole dies, Proxmox can detect the failure and try to restart the container on another node — but the container's disk is sitting on the dead node's local storage. The other nodes can't see it. Failover fails.</p>
+
+                    <p>The fix is shared storage. All nodes need to be able to see the same disk so any of them can pick up where the other left off.</p>
+
+                    <h2><span>// </span>The Hardware</h2>
+
+                    <p>I had a 2TB 3.5" SATA drive and picked up a powered USB SATA dock. The "powered" part matters — unpowered docks are the most common cause of intermittent disconnects, and a storage device that occasionally drops off the network is worse than no storage device at all.</p>
+
+                    <p>Is USB ideal for shared storage? No. Is it fine for a homelab running Pi-hole? Absolutely. The write load on a DNS container is minimal and USB 3.0 throughput is more than enough.</p>
+
+                    <h2><span>// </span>Step 1: Format the Drive</h2>
+
+                    <p>Plug the drive into one of your nodes and find it:</p>
+
+                    <div class="code-block">
+                        <pre>lsblk -o NAME,SIZE,TYPE,TRAN,MODEL,MOUNTPOINT</pre>
+                    </div>
+
+                    <p>Look for the USB device — it'll show <code>usb</code> in the TRAN column. Mine showed up as <code>/dev/sdb</code>. Wipe any old partitions and format it:</p>
+
+                    <div class="code-block">
+                        <pre>wipefs -a /dev/sdb
+mkfs.ext4 /dev/sdb</pre>
+                    </div>
+
+                    <h2><span>// </span>Step 2: Mount It and Set Up NFS</h2>
+
+                    <p>Create a mount point, mount the drive, add it to fstab so it survives reboots, then install and configure the NFS server:</p>
+
+                    <div class="code-block">
+                        <pre>mkdir /mnt/shared
+mount /dev/sdb /mnt/shared
+echo "/dev/sdb /mnt/shared ext4 defaults 0 2" >> /etc/fstab
+apt install -y nfs-kernel-server
+echo "/mnt/shared 10.10.10.0/24(rw,sync,no_subtree_check,no_root_squash)" >> /etc/exports
+exportfs -a
+systemctl enable --now nfs-kernel-server</pre>
+                    </div>
+
+                    <p>Replace the subnet with whatever your Proxmox nodes are on. Verify the share is live:</p>
+
+                    <div class="code-block">
+                        <pre>exportfs -v</pre>
+                    </div>
+
+                    <h2><span>// </span>Step 3: Mount on the Other Nodes</h2>
+
+                    <p>On every other node in the cluster, mount the NFS share and add it to fstab:</p>
+
+                    <div class="code-block">
+                        <pre>mkdir /mnt/shared
+mount 10.10.10.X:/mnt/shared /mnt/shared
+echo "10.10.10.X:/mnt/shared /mnt/shared nfs defaults 0 0" >> /etc/fstab
+systemctl daemon-reload</pre>
+                    </div>
+
+                    <p>Replace <code>10.10.10.X</code> with the IP of the node hosting the drive.</p>
+
+                    <h2><span>// </span>Step 4: Register as Proxmox Shared Storage</h2>
+
+                    <p>Tell Proxmox about it so it shows up as a storage option across the whole cluster. Run this on any one node:</p>
+
+                    <div class="code-block">
+                        <pre>pvesm add nfs shared --server 10.10.10.X --export /mnt/shared --content images,rootdir --nodes Proxmox1,Proxmox2,Proxmox3</pre>
+                    </div>
+
+                    <p>Verify it shows up and is active:</p>
+
+                    <div class="code-block">
+                        <pre>pvesm status | grep shared</pre>
+                    </div>
+
+                    <h2><span>// </span>Step 5: Move Pi-hole to Shared Storage</h2>
+
+                    <p>Shut down the container first, then move its disk to the shared storage:</p>
+
+                    <div class="code-block">
+                        <pre>pct stop 901
+pct move-volume 901 rootfs --storage shared</pre>
+                    </div>
+
+                    <p>This copies the container's root filesystem to the NFS share. Now any node can access it.</p>
+
+                    <h2><span>// </span>Step 6: Enable HA</h2>
+
+                    <p>In the Proxmox GUI: <strong>Datacenter → HA → Add</strong>, select the container, set state to <strong>started</strong>. That's it. Start the container back up and you're done.</p>
+
+                    <p>Now if the node running Pi-hole goes offline, Proxmox detects the failure, pulls the container's disk from the NFS share, and starts it on a healthy node automatically. Your DNS barely hiccups.</p>
+
+                    <h2><span>// </span>The Caveat</h2>
+
+                    <p>The node hosting the USB drive is now a single point of failure for shared storage. If that node dies, the NFS share goes with it and HA can't do its job. For a homelab this is an acceptable tradeoff. For production you'd want Ceph or a proper NAS with redundancy. But for getting your feet wet with Proxmox HA without spending anything? This gets the job done.</p>
+
+                    <div class="post-footer-nav">
+                        <a href="index.html" class="blog-link">&larr; back to home</a>
+                    </div>
+
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <p>&copy; 2026 Robert Alexander &mdash; <span>Security Engineer. Perpetual student. Always in the lab.</span></p>
+        </footer>
+
+    </body>
+</html>
