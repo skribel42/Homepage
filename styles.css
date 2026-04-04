@@ -461,3 +461,13 @@ footer span {
     padding-top: 2rem;
     border-top: 1px solid var(--border);
 }
+
+/* =============================================
+   CERT / TAG LIST
+   ============================================= */
+.cert-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
