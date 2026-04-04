@@ -371,3 +371,93 @@ footer span {
     color: var(--green);
     text-shadow: 0 0 8px var(--green-glow);
 }
+
+/* =============================================
+   BLOG POST PAGE
+   ============================================= */
+.blog-post {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 0;
+}
+
+.post-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.post-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.post-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    font-size: 0.75rem;
+    color: var(--black);
+    background: var(--green-dim);
+    padding: 0.2rem 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.post-body h2 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.post-body p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    color: rgba(0, 255, 65, 0.6);
+    line-height: 1.9;
+}
+
+.post-body code {
+    color: var(--green);
+    background: var(--green-faint);
+    padding: 0.1rem 0.4rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9em;
+}
+
+.code-block {
+    background: #050505;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+}
+
+.code-block pre {
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.post-footer-nav {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
