@@ -1,42 +1,115 @@
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="styles.css" rel="stylesheet">
-        <title>About - My Webpage</title>
+        <title>// About - Robert Alexander</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">My Site</a>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="interests.html">Interests</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Me</a></li>
-                </ul>
+                <a class="navbar-brand" href="index.html">r.alexander</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="interests.html">Interests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#blog">Blog</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
 
-        <div class="container mt-5">
-            <h1>About Me</h1>
-            <p>Hi! I work in cybersecurity with a passion for offensive security.</p>
-            
-            <div class="card p-3 mb-4">
-                <h2>Professional</h2>
-                <p>I currently work in cybersecurity and actively practice my skills on TryHackMe. I'm planning to enroll in OffSec's OSCP Learn 1 course next year to earn my penetration testing certification.</p>
+        <section class="hero" style="min-height: 35vh;">
+            <div class="container">
+                <p class="hero-label">about.exe</p>
+                <h1>About Me</h1>
+                <p class="hero-title"><span>//</span> Security Engineer</p>
             </div>
-            
-            <div class="card p-3 mb-4">
-                <h2>Personal Life</h2>
-                <p>When I'm not hacking boxes, you can find me enjoying the outdoors in Arkansas. I love kayaking, fishing, and spending time in nature. I'm also a big cat person!</p>
+        </section>
+
+        <section class="about-snap">
+            <div class="container">
+
+                <!-- Bio -->
+                <div class="row g-4 mb-5">
+                    <div class="col-12">
+                        <div class="snap-card">
+                            <p class="snap-icon">></p>
+                            <h3 class="snap-title">Who I Am</h3>
+                            <p class="snap-text">I'm Robert Alexander — a Security Engineer with a passion for understanding how things break. I hold CompTIA A+, Network+, and Security+ certifications and have completed Harvard's CS50. My career is headed toward offensive security and penetration testing, and I spend a lot of my time sharpening those skills both professionally and on my own time.</p>
+                            <p class="snap-text">I believe the best defenders think like attackers. That mindset drives everything I do.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-5">
+
+                    <!-- Professional -->
+                    <div class="col-md-6">
+                        <div class="snap-card" style="height:100%;">
+                            <p class="snap-icon">></p>
+                            <h3 class="snap-title">Professional</h3>
+                            <p class="snap-text">I work in cybersecurity doing the kind of IT work that keeps businesses running and secured — endpoint management, Microsoft 365, network security, and incident response. I'm the person who finds a way in when nobody else can.</p>
+                            <p class="snap-text">I actively practice offensive security skills on TryHackMe and am working toward enrolling in OffSec's OSCP (Learn One) program — the gold standard penetration testing certification.</p>
+                            <div class="cert-list">
+                                <span class="tag">CompTIA A+</span>
+                                <span class="tag">CompTIA Net+</span>
+                                <span class="tag">CompTIA Sec+</span>
+                                <span class="tag">CS50</span>
+                                <span class="tag">TryHackMe</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal -->
+                    <div class="col-md-6">
+                        <div class="snap-card" style="height:100%;">
+                            <p class="snap-icon">></p>
+                            <h3 class="snap-title">Outside the Terminal</h3>
+                            <p class="snap-text">When I'm not hacking boxes or tinkering in the homelab, I'm usually outdoors. I love kayaking, fishing, and just being out in nature — it's a good reset from staring at terminals all day.</p>
+                            <p class="snap-text">I'm also a cat person. Unapologetically.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Currently working on -->
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="snap-card">
+                            <p class="snap-icon">></p>
+                            <h3 class="snap-title">Currently Working On</h3>
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-4">
+                                    <p class="blog-date">learning</p>
+                                    <p class="snap-text">Sharpening offensive security skills on TryHackMe. Working toward OSCP.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="blog-date">building</p>
+                                    <p class="snap-text">Running a 3-node Proxmox homelab cluster to practice virtualization, networking, and security concepts hands-on.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="blog-date">writing</p>
+                                    <p class="snap-text">Documenting homelab projects and security write-ups here on this blog to share what I learn along the way.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        
-        <footer class="bg-dark text-white text-center p-3 mt-5">
-            <p>&copy; 2025 My CS50 Project</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Robert Alexander &mdash; <span>Security Engineer. Perpetual student. Always in the lab.</span></p>
         </footer>
+
     </body>
 </html>
